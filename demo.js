@@ -3,14 +3,15 @@ var http = require("http");
 
 var client = http.createClient(8000, "127.0.0.1");
 
-fs.readdir("./jscrap", function (err, files) {
+fs.readdir(".", function (err, files) {
     if (err) throw err;
     files.map(function (file) {
         if (file.match(/\.js$/)) {
-            var data = fs.readFile("./jscrap/" + file, function (err, content) {
+            var data = fs.readFile("./" + file, function (err, content) {
                 if (err) throw err;
                 var request = client.request('POST', '/');
-                request.end(content).on("response", function (response) {
+                request.end(content);
+                request.on("response", function (response) {
                     var data = "";
                     response.on("data", function (chunk) { data += chunk; });
                     response.on("end", function () {
